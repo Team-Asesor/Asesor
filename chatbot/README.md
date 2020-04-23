@@ -1,6 +1,6 @@
-# Disclaimer: This chatbot is developed by Microsoft bot framework using instruction from https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-tutorial-basic-deploy?view=azure-bot-service-4.0&tabs=python%2Ccsharp 
-
-# my_chat_bot
+## Disclaimer: This chatbot is developed by Microsoft bot framework using instruction from -https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-tutorial-basic-deploy?view=azure-bot-service-4.0&tabs=python%2Ccsharp 
+-https://github.com/microsoft/botbuilder-python/
+## my_chat_bot
 
 Demonstrate the core capabilities of the Microsoft Bot Framework
 
