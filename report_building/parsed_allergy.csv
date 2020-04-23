@@ -1,0 +1,11 @@
+,text,allergies,severity,onset,status
+0,I have a severe allergy of pollen. It was there since I was a child.,pollen,['severe'],[],active
+1,I am mildly allergic to fur. It started a month ago.   ,fur,[],['a month ago'],active
+2,I am having a mild allergic reaction to peanut from last four months. ,peanut,['mild'],['last four months'],active
+3,I can not tollerate dairy. Was not present until last year ,dairy,[],['last year'],active
+4,I have lactose intollerance. Started after I came back from military two months ago.   ,lactose,[],['two months ago'],active
+5,I have trouble digesting eggs. It was never present before birth of my first child a month ago.     ,eggs,[],['a month ago'],active
+6,I can not eat shrimp. I had it since childhood but it was mild. But now it is getting worse.,shrimp,"['mild', 'bad']",[],active
+7,I start sneezing whenever I get near flowers. It is quite severe now. ,vomiting,['severe'],[],active
+8,Can not withstand cats. Became worse last month. ,cats,['bad'],['last month'],active
+9,feeling allergic to cheese since last week. But it is moderate.,cheese,['moderate'],['last week'],active

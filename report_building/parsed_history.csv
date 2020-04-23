@@ -1,0 +1,10 @@
+,text,histories,severity,onset,status
+0,"I had twisted my ankle a few weeks ago. Fortunately, it caused just a mild irritation and was healed with the help of painkiller.",twisted ankle,['mild'],['a few weeks ago'],resolved
+1,I had c-section child delivery four months ago. The operation was successful and I had a healthy baby.   ,"c-section, child delivery",[],['four months ago'],resolved
+2,I went through a major heart attack last month. I am not completely recovered yet and is under constant monitoring. ,heart attack,['major'],['last month'],active
+3,Had a mild flu last week. Doing much better now. Completely recovered.,flu,['mild'],['last week'],resolved
+4,I am suffering from epilepsy since childhood. Last week it got quite severe. Not recovered yet.   ,epilepsy,['severe'],['last week'],active
+5,In the last month I suffered a mild stroke. The doctor told me to be in rest for at least six months. Still recovering.     ,stroke,['mild'],"['the last month', 'at least six months']",active
+6,Had a moderate dengue fever four weeks ago. Recoved completely.,dengue,['moderate'],['four weeks ago'],resolved
+7,Suffering from severe ADHD since last year. Not resolved yet. ,ADHD,['severe'],['last year'],active
+8,Went through a surgery for urine infection last year. The operation was successful and the problem was solved. ,urine infection,[],['last year'],resolved
