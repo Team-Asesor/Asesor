@@ -1,3 +1,5 @@
+# Disclaimer: This chatbot is developed by Microsoft bot framework using instruction from https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-tutorial-basic-deploy?view=azure-bot-service-4.0&tabs=python%2Ccsharp 
+
 # my_chat_bot
 
 Demonstrate the core capabilities of the Microsoft Bot Framework
@@ -26,7 +28,39 @@ This sample **requires** prerequisites in order to run.
 - Launch Bot Framework Emulator
 - Enter a Bot URL of `http://localhost:3978/api/messages`
 
+## Running HTTP Server to access the bot
 
+### Download and install node.js 
+
+-https://nodejs.org/en/download/ 
+
+ 
+
+### Download the file “index.html” and place it in a folder 
+
+### Navigate to the folder where you placed the “index.html” file.  
+
+### Open terminal and type the following commands: 
+
+- npm install http-server -g 
+
+### If you have permission issues, try: 
+
+- Sudo npm install http-server -g 
+
+### Then from the command prompt, type: 
+
+- http-server -p 8000 
+
+
+
+ 
+
+Step 4: open chrome and go to the following link:  
+
+http://localhost:8000/?s=JXzHgxgkOHM.usPxmz9BqwKxOZowk9uFuMhFxzmnUKOEfLB09Rp0lJ4 
+
+P.S: It is important to use google chrome for voice support 
 ## Further reading
 
 - [Bot Framework Documentation](https://docs.botframework.com)
