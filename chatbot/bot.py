@@ -1,10 +1,54 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-
+import json
 from botbuilder.core import ActivityHandler, TurnContext, MessageFactory
 from botbuilder.schema import ChannelAccount, CardAction, SuggestedActions, ActionTypes
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
+from botbuilder.ai.luis import LuisApplication, LuisRecognizer
+from botbuilder.core import Recognizer, RecognizerResult, TurnContext
+
+from config import DefaultConfig
+
+
+class IntentRecognizer(Recognizer):
+    def __init__(self):
+        configuration=DefaultConfig()
+        self._recognizer = None
+        if configuration.LUIS_APP_ID and configuration.LUIS_API_KEY and configuration.LUIS_API_HOST_NAME:
+            luis_application = LuisApplication(configuration.LUIS_APP_ID, configuration.LUIS_API_KEY, "https://" + configuration.LUIS_API_HOST_NAME)
+            self._recognizer = LuisRecognizer(luis_application)
+
+    @property
+    def is_configured(self) -> bool:
+        return self._recognizer is not None
+
+    async def recognize(self, turn_context: TurnContext) -> RecognizerResult:
+        return await self._recognizer.recognize(turn_context)
+
+class Result():
+    def __init__(self):
+        self.data={}
+        self.data['AddSymptom']={}
+        self.data['AddSymptom']['Status'] = ""
+        self.data['AddSymptom']['Onslaught'] = ""
+        self.data['AddSymptom']['Symptoms'] = ""
+        self.data['AddSymptom']['Severity'] = ""
+
+        self.data['AddHistory']= {}
+        self.data['AddHistory']['History'] = ""
+        self.data['AddHistory']['Status'] = ""
+        self.data['AddHistory']['Onslaught'] = ""
+
+        self.data['AddMedication'] = {}
+        self.data['AddMedication']['Medication'] = ""
+        self.data['AddMedication']['Dosage'] = ""
+
+        self.data['AddAllergy']= {}
+        self.data['AddAllergy']['Status'] = ""
+        self.data['AddAllergy']['Onslaught'] = ""
+        self.data['AddAllergy']['Allergy'] = ""
+        self.data['AddAllergy']['Severity'] = ""
 
 
 class MyBot(ActivityHandler):
@@ -34,10 +78,46 @@ class MyBot(ActivityHandler):
             ))
         return response.sentiment
 
+    def parse_json(self, recognizer_result):
+        intent = (
+            sorted(
+                recognizer_result.intents,
+                key=recognizer_result.intents.get,
+                reverse=True,
+            )[:1][0]
+            if recognizer_result.intents
+            else None
+        )
+        intent=str(intent)
+        print("intent is: "+intent)
+        return self.parse(recognizer_result, intent)
+
+    def parse(self, dict_response, intent):
+        output_dict=Result()
+        if intent in output_dict.data:
+            entities = dict_response.entities['$instance'].keys()
+            print("entities are: ")
+            print(type(entities))
+            print(entities)
+            for entity in entities:
+                if entity in output_dict.data[intent].keys():
+                    print(entity)
+                    val=dict_response.entities['$instance'][entity]
+                    output_dict.data[intent][entity]=val[0]['text']
+
+            print("returning the following dictionary: ")
+            print(output_dict.data[intent])
+            return intent, output_dict.data[intent]
+        print("returning the following dictionary: ")
+        print({'val':'empty'})
+        return intent, {'val':'empty'}
+
     def __init__(self):
         self.cur_q_id=0
         self.prev_q_id=-1
-        
+        self.key="0ccf217ddc3642eba4a838cb54b7fd29"
+        self.endpoint="https://asesorsa.cognitiveservices.azure.com/"
+        self.recognizer = IntentRecognizer()
         self.ques_list = [
             'Greetings!!',
             'What brings you in today? Would you like to follow up on a previous visit or start a new one?',
@@ -56,7 +136,7 @@ class MyBot(ActivityHandler):
             'Please describe your menstrual history',
             'Please describe your pregnancy history',
             'Is there any more information you think is important for the doctor to know at a first glance? Please feel free to speak your mind.',
-            'Thank you for using Asesor!! I am still being contructed. When I am completed, I will be able to redirect you to the self scheduling page.',
+            'Thank you for using Asesor!! I am still being constructed. When I am completed, I will be able to redirect you to the self scheduling page.',
             'We have compiled the information we received into a nice report below. Please review it and modify/add/correct anything necessary.'
         ]
 
@@ -66,6 +146,8 @@ class MyBot(ActivityHandler):
         #await turn_context.send_activity(f"You said 3 '{ turn_context.activity.text }'")
         
         #print("previous: "+str(self.prev_q_id))
+        res= await self.recognizer.recognize(turn_context)
+        intent, parsed_result=self.parse_json(res)
         client = self.authenticate_client()
         response=self.sentiment_analysis_example(client, str(turn_context.activity.text).lower())
         prefix=""
@@ -126,7 +208,12 @@ class MyBot(ActivityHandler):
             )
 
         if self.cur_q_id!=4:
+            await turn_context.send_activity("Your Intention is this: "+str(intent))
+            await turn_context.send_activity("I also got the following info: " + str(parsed_result))
             await turn_context.send_activity(prefix+ques)
+        else:
+            await turn_context.send_activity(ques)
+
         self.prev_q_id = self.cur_q_id
 
     async def on_members_added_activity(
